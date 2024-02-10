@@ -10,10 +10,10 @@ class GeekjobSource extends ISource {
   List<String>? listOfVacancies;
 
   @override
-  String get url => 'https://layboard.com/vakansii/search?q=flutter';
+  String get url => 'https://geekjob.ru/vacancies?qs=flutter';
 
   @override
-  String get name => 'Layboard';
+  String get name => 'Geekjob';
 
   @override
   Future<void> parseImplementation(String html) async {

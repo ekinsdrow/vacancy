@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
+import 'package:vacancy/logger/logger.dart';
 import 'package:vacancy/sources/flutter_source.dart';
 import 'package:vacancy/sources/geekjob_source.dart';
 import 'package:vacancy/sources/google_source.dart';
@@ -15,15 +18,32 @@ import 'package:vacancy/sources/superlist_source.dart';
 import 'package:vacancy/sources/vgv_source.dart';
 import 'package:vacancy/sources/wellfound_source.dart';
 import 'package:vacancy/sources/wolt_source.dart';
+import 'package:vacancy/tg/telegram_bot.dart';
 
-Future<void> fetch() async {
+Future<TelegramBot> startBot() async {
+  final bot = TelegramBot(
+    token: '6902334626:AAHgRQi6KxP3zM50TE5-zroaQpg_R7j_gHs',
+  )..startBot();
+
+  return bot;
+}
+
+Future<void> startTimer(TelegramBot bot) async {
+  Timer.periodic(
+    Duration(hours: 24),
+    (timer)  {
+      bot.sendMessage();
+    },
+  );
+}
+
+Future<String> fetch() async {
   final dio = Dio();
 
   final listOfAllVacancies = <String>[];
   final listOfSites = <String>[];
 
   final sources = [
-    LinkedinSource(dio: dio),
     HHSource(dio: dio),
     RemoteOkSource(dio: dio),
     StreamSource(dio: dio),
@@ -38,6 +58,7 @@ Future<void> fetch() async {
 
     // Without parsing
     GeekjobSource(dio: dio),
+    LinkedinSource(dio: dio),
     RemotiveSource(dio: dio),
     VGVSource(dio: dio),
     WellfoundSource(dio: dio),
@@ -53,15 +74,22 @@ Future<void> fetch() async {
     }
   }
 
-  print('🐭 List of all links:');
+  Logger.log('🐭 List of all links:');
   for (var i = 0; i < listOfAllVacancies.length; i++) {
     final link = listOfAllVacancies[i];
     final isLast = i == listOfAllVacancies.length - 1;
-    print('🔗 $link${isLast ? '\n' : ''}');
+    Logger.log('🔗 $link${isLast ? '\n' : ''}');
   }
 
-  print('🦄 List of all sites:');
+  Logger.log('🦄 List of all sites:');
   for (final site in listOfSites) {
-    print('🌐 $site');
+    Logger.log('🌐 $site');
   }
+
+  final fullList = [
+    ...listOfAllVacancies,
+    ...listOfSites,
+  ];
+
+  return fullList.join('\n');
 }

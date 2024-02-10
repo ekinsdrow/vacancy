@@ -1,4 +1,3 @@
-import 'package:html/parser.dart';
 import 'package:vacancy/sources/i_source.dart';
 
 class LinkedinSource extends ISource {

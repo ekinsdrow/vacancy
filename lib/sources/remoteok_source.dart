@@ -14,7 +14,7 @@ class RemoteOkSource extends ISource {
   String get url => 'https://remoteok.com/remote-flutter-jobs?order_by=date';
 
   @override
-  String get name => 'remoteok';
+  String get name => 'RemoteOk';
 
   @override
   Future<void> parseImplementation(String html) async {

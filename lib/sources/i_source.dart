@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:vacancy/logger/logger.dart';
 
 abstract class ISource {
   final Dio dio;
@@ -15,38 +16,38 @@ abstract class ISource {
     final request = await fetch();
 
     if (request.statusCode == 200) {
-      print('🕺 Successfully get $name');
+      Logger.log('🕺 Successfully get $name');
 
       await parseImplementation(request.data as String);
     } else {
-      print('😢 Error when parse $name');
+      Logger.log('😢 Error when parse $name');
     }
   }
 
   void printSuccessMessage() {
-    print('✅ Find some new vacancies on $name');
-    print('🔗 $url\n');
+    Logger.log('✅ Find some new vacancies on $name');
+    Logger.log('🔗 $url\n');
     isNeedToShare = true;
   }
 
   void printErrorMessage() {
-    print('❌ Not find any new vacancies on $name\n');
+    Logger.log('❌ Not find any new vacancies on $name\n');
   }
 
   void printSorry() {
-    print('🤷‍♂️ Sorry, but $name is not parsable now');
-    print('🤷‍♂️ Please check it by yourself');
+    Logger.log('🤷‍♂️ Sorry, but $name is not parsable now');
+    Logger.log('🤷‍♂️ Please check it by yourself');
     isNeedToShare = true;
-    print('🔗 $url\n');
+    Logger.log('🔗 $url\n');
   }
 
   void printListOfVacancies() {
     if (listOfVacancies != null) {
-      print('📋 List of vacancies on $name:');
+      Logger.log('📋 List of vacancies on $name:');
       for (int i = 0; i < listOfVacancies!.length; i++) {
         final vacancy = listOfVacancies![i];
         final isLast = i == listOfVacancies!.length - 1;
-        print('🔗 $vacancy${isLast ? '\n' : ''}');
+        Logger.log('🔗 $vacancy${isLast ? '\n' : ''}');
       }
     }
   }
