@@ -30,9 +30,15 @@ Future<TelegramBot> startBot() async {
 
 Future<void> startTimer(TelegramBot bot) async {
   Timer.periodic(
-    Duration(hours: 24),
+    Duration(minutes: 1),
     (timer)  {
-      bot.sendMessage();
+      final now = DateTime.now();
+      final currentHours = now.hour;
+      final currentMinutes = now.minute;
+
+      if(currentHours == 6 && currentMinutes == 0) {
+        bot.sendMessage();
+      }
     },
   );
 }
