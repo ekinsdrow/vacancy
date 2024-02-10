@@ -1,18 +1,22 @@
+import 'package:dio/dio.dart';
+import 'package:teledart/model.dart';
 import 'package:teledart/teledart.dart';
 import 'package:teledart/telegram.dart';
 import 'package:vacancy/logger/logger.dart';
+import 'package:vacancy/notion/notion.dart';
 import 'package:vacancy/vacancy.dart';
 
 class TelegramBot {
-  final String token;
-
   /// Ekinsdrow
   final myChatId = 401014677;
+  final String token;
+  final Notion notion;
 
   TeleDart? teleDart;
 
   TelegramBot({
     required this.token,
+    required this.notion,
   });
 
   Future<void> startBot() async {
@@ -24,32 +28,61 @@ class TelegramBot {
 
     teleDart?.start();
 
-    teleDart?.onCommand('get').listen(
-      (message) async {
-        if (message.chat.id != myChatId) {
-          return;
-        }
+    teleDart?.onCommand('get').listen(_get);
+    teleDart?.onCommand('update').listen(_update);
+  }
 
-        try {
-          message.reply(
-            '🔍 Fetching vacancies...',
-          );
+  Future<void> _get(TeleDartMessage message) async {
+    if (message.chat.id != myChatId) {
+      return;
+    }
 
-          await fetch();
-          final logs = Logger.getMessages();
+    try {
+      message.reply(
+        '🔍 Fetching vacancies...',
+      );
 
-          for (final msg in logs) {
-            message.reply(
-              msg,
-            );
-          }
-        } catch (e) {
-          message.reply(
-            'Error: $e',
-          );
-        }
-      },
-    );
+      await fetch();
+      final logs = Logger.getMessages();
+
+      for (final msg in logs) {
+        message.reply(
+          msg,
+        );
+      }
+    } on Exception catch (e) {
+      message.reply(
+        '❌ Error: $e',
+      );
+    }
+  }
+
+  Future<void> _update(TeleDartMessage message) async {
+    if (message.chat.id != myChatId) {
+      return;
+    }
+
+    try {
+      message.reply(
+        '🐶 Start update statistics',
+      );
+
+      final value = await notion.update();
+
+      if (value == null) {
+        message.reply(
+          '🦊❌ Error: value is null, statistics not updated',
+        );
+      } else {
+        message.reply(
+          '🦊 Statistics updated to $value',
+        );
+      }
+    } on Exception catch (e) {
+      message.reply(
+        '❌ Error: $e',
+      );
+    }
   }
 
   Future<void> sendMessage() async {
@@ -72,10 +105,10 @@ class TelegramBot {
           message,
         );
       }
-    } catch (e) {
+    } on Exception catch (e) {
       teleDart?.sendMessage(
         myChatId,
-        'Error: $e',
+        '❌ Error: $e',
       );
     }
   }

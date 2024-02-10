@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:vacancy/logger/logger.dart';
+import 'package:vacancy/notion/notion.dart';
 import 'package:vacancy/sources/flutter_source.dart';
 import 'package:vacancy/sources/geekjob_source.dart';
 import 'package:vacancy/sources/google_source.dart';
@@ -23,7 +24,21 @@ import 'package:vacancy/tg/telegram_bot.dart';
 Future<TelegramBot> startBot() async {
   final bot = TelegramBot(
     token: '6902334626:AAHgRQi6KxP3zM50TE5-zroaQpg_R7j_gHs',
-  )..startBot();
+    notion: Notion(
+      dio: Dio(
+        BaseOptions(
+          headers: {
+            'Authorization':
+                'Bearer secret_kHkqpzmZCLdBaYAi2kWUf7PC0xmrSjHL8wmBwehqGZo',
+            'Notion-Version': '2022-02-22',
+          },
+        ),
+      ),
+      pageId: '2d8c8da6212c4ee9a98dc834ca805300',
+    ),
+  );
+
+  await bot.startBot();
 
   return bot;
 }
@@ -31,12 +46,12 @@ Future<TelegramBot> startBot() async {
 Future<void> startTimer(TelegramBot bot) async {
   Timer.periodic(
     Duration(minutes: 1),
-    (timer)  {
+    (timer) {
       final now = DateTime.now();
       final currentHours = now.hour;
       final currentMinutes = now.minute;
 
-      if(currentHours == 6 && currentMinutes == 0) {
+      if (currentHours == 6 && currentMinutes == 0) {
         bot.sendMessage();
       }
     },

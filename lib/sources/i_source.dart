@@ -26,8 +26,8 @@ abstract class ISource {
         } else {
           Logger.log('😢 Error when parse $name\n');
         }
-      } catch (e) {
-        Logger.log('😢 Error when get $name - $e\n');
+      } on Exception catch (e) {
+        Logger.log('❌ Error when get $name - $e\n');
       }
     } else {
       await parseImplementation('');
