@@ -30,16 +30,22 @@ class TelegramBot {
           return;
         }
 
-        message.reply(
-          '🔍 Fetching vacancies...',
-        );
-
-        await fetch();
-        final logs = Logger.getMessages();
-
-        for (final msg in logs) {
+        try {
           message.reply(
-            msg,
+            '🔍 Fetching vacancies...',
+          );
+
+          await fetch();
+          final logs = Logger.getMessages();
+
+          for (final msg in logs) {
+            message.reply(
+              msg,
+            );
+          }
+        } catch (e) {
+          message.reply(
+            'Error: $e',
           );
         }
       },
@@ -51,18 +57,25 @@ class TelegramBot {
       return;
     }
 
-    teleDart?.sendMessage(
-      myChatId,
-      '🔍 Fetching vacancies...',
-    );
-
-    await fetch();
-    final logs = Logger.getMessages();
-
-    for (final message in logs) {
+    try {
       teleDart?.sendMessage(
         myChatId,
-        message,
+        '🔍 Fetching vacancies...',
+      );
+
+      await fetch();
+      final logs = Logger.getMessages();
+
+      for (final message in logs) {
+        teleDart?.sendMessage(
+          myChatId,
+          message,
+        );
+      }
+    } catch (e) {
+      teleDart?.sendMessage(
+        myChatId,
+        'Error: $e',
       );
     }
   }

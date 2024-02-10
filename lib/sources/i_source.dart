@@ -16,14 +16,18 @@ abstract class ISource {
 
   Future<void> parseResponse() async {
     if (isNeedFetch) {
-      final request = await fetch();
+      try {
+        final request = await fetch();
 
-      if (request.statusCode == 200) {
-        Logger.log('🕺 Successfully get $name');
+        if (request.statusCode == 200) {
+          Logger.log('🕺 Successfully get $name');
 
-        await parseImplementation(request.data as String);
-      } else {
-        Logger.log('😢 Error when parse $name');
+          await parseImplementation(request.data as String);
+        } else {
+          Logger.log('😢 Error when parse $name\n');
+        }
+      } catch (e) {
+        Logger.log('😢 Error when get $name - $e\n');
       }
     } else {
       await parseImplementation('');
