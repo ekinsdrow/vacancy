@@ -6,6 +6,8 @@ abstract class ISource {
 
   bool isNeedToShare = false;
 
+  final isNeedFetch = true;
+
   ISource({required this.dio});
 
   Future<Response<dynamic>> fetch() async {
@@ -13,14 +15,18 @@ abstract class ISource {
   }
 
   Future<void> parseResponse() async {
-    final request = await fetch();
+    if (isNeedFetch) {
+      final request = await fetch();
 
-    if (request.statusCode == 200) {
-      Logger.log('🕺 Successfully get $name');
+      if (request.statusCode == 200) {
+        Logger.log('🕺 Successfully get $name');
 
-      await parseImplementation(request.data as String);
+        await parseImplementation(request.data as String);
+      } else {
+        Logger.log('😢 Error when parse $name');
+      }
     } else {
-      Logger.log('😢 Error when parse $name');
+      await parseImplementation('');
     }
   }
 

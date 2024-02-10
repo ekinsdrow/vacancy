@@ -15,6 +15,11 @@ class LinkedinSource extends ISource {
   @override
   String get name => 'Linkedin';
 
+
+  @override
+  // ignore: overridden_fields
+  final isNeedFetch = false;
+
   @override
   Future<void> parseImplementation(String html) async {
     printSorry();

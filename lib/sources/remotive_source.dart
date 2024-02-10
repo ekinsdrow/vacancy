@@ -16,6 +16,11 @@ class RemotiveSource extends ISource {
   String get name => 'Remotive';
 
   @override
+  // ignore: overridden_fields
+  final isNeedFetch = false;
+
+
+  @override
   Future<void> parseImplementation(String html) async {
     printSorry();
   }

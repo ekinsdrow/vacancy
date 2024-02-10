@@ -16,6 +16,11 @@ class VGVSource extends ISource {
   String get name => 'VGV';
 
   @override
+  // ignore: overridden_fields
+  final isNeedFetch = false;
+
+
+  @override
   Future<void> parseImplementation(String html) async {
     printSorry();
   }

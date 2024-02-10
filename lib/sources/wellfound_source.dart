@@ -16,6 +16,11 @@ class WellfoundSource extends ISource {
   String get name => 'Wellfound';
 
   @override
+  // ignore: overridden_fields
+  final isNeedFetch = false;
+
+
+  @override
   Future<void> parseImplementation(String html) async {
     printSorry();
   }
