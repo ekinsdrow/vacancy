@@ -8,6 +8,7 @@ import 'package:vacancy/sources/geekjob_source.dart';
 import 'package:vacancy/sources/google_source.dart';
 import 'package:vacancy/sources/habr_source.dart';
 import 'package:vacancy/sources/hh_source.dart';
+import 'package:vacancy/sources/jetbrains_source.dart';
 import 'package:vacancy/sources/ladybaord_source.dart';
 import 'package:vacancy/sources/linkedin_source.dart';
 import 'package:vacancy/sources/relocate_me_source.dart';
@@ -79,6 +80,7 @@ Future<String> fetch() async {
 
     // Without parsing
     GeekjobSource(dio: dio),
+    JetbrainsSource(dio: dio),
     LinkedinSource(dio: dio),
     RemotiveSource(dio: dio),
     VGVSource(dio: dio),
