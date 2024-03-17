@@ -19,6 +19,7 @@ import 'package:vacancy/sources/remotive_source.dart';
 import 'package:vacancy/sources/spotify_source.dart';
 import 'package:vacancy/sources/stream_source.dart';
 import 'package:vacancy/sources/superlist_source.dart';
+import 'package:vacancy/sources/tabby_source.dart';
 import 'package:vacancy/sources/vgv_source.dart';
 import 'package:vacancy/sources/wellfound_source.dart';
 import 'package:vacancy/sources/wolt_source.dart';
@@ -88,6 +89,7 @@ Future<String> fetch() async {
     RemotiveSource(dio: dio),
     VGVSource(dio: dio),
     WellfoundSource(dio: dio),
+    TabbySource(dio: dio),
   ];
 
   for (final source in sources) {
