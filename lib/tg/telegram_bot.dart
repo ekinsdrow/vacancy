@@ -103,6 +103,10 @@ class TelegramBot {
           myChatId,
           message,
         );
+
+        await Future.delayed(
+          const Duration(seconds: 1),
+        );
       }
     } on Exception catch (e) {
       teleDart?.sendMessage(
